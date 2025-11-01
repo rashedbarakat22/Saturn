@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saturn - Now Named Sara | Celestial Registry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #0a0e27;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Multi-Layer Star Background */
+        @keyframes twinkle {
+            0% { background-position: 0 0; }
+            100% { background-position: -10000px 5000px; }
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: 0;
+            background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png');
+            background-repeat: repeat;
+        }
+
+        #stars1 {
+            animation: twinkle 150s linear infinite;
+        }
+
+        #stars2 {
+            animation: twinkle 200s linear infinite;
+            opacity: 0.7;
+        }
+
+        #stars3 {
+            background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/twinkling.png');
+            animation: twinkle 250s linear infinite;
+            opacity: 0.5;
+        }
+
+        .nebula {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+            animation: nebulaPulse 8s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes nebulaPulse {
+            0%, 100% { opacity: 0.15; transform: scale(1); }
+            50% { opacity: 0.25; transform: scale(1.1); }
+        }
+
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            z-index: 2;
+        }
+
+        .saturn-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin-bottom: 3rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .saturn-container:hover {
+            transform: scale(1.05);
+        }
+
+        .saturn {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #f4e4c1 0%, #e8d5a8 50%, #d4c197 100%);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 
+                inset -30px -30px 60px rgba(0,0,0,0.3),
+                0 0 80px rgba(244, 228, 193, 0.4),
+                0 0 120px rgba(244, 228, 193, 0.2);
+            animation: rotate 20s linear infinite, float 6s ease-in-out infinite;
+        }
+
+        .ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(75deg);
+            width: 500px;
+            height: 500px;
+            animation: ringFloat 6s ease-in-out infinite;
+        }
+
+        .ring::before,
+        .ring::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .ring::before {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center,
+                transparent 0%,
+                transparent 30%,
+                rgba(244, 228, 193, 0.15) 31%,
+                rgba(255, 240, 200, 0.5) 35%,
+                rgba(244, 228, 193, 0.8) 40%,
+                rgba(255, 250, 220, 0.9) 45%,
+                rgba(244, 228, 193, 0.95) 50%,
+                rgba(255, 250, 220, 0.9) 55%,
+                rgba(244, 228, 193, 0.8) 60%,
+                rgba(255, 240, 200, 0.5) 65%,
+                rgba(244, 228, 193, 0.15) 69%,
+                transparent 70%,
+                transparent 100%
+            );
+            filter: drop-shadow(0 0 20px rgba(244, 228, 193, 0.6));
+        }
+
+        .ring::after {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center,
+                transparent 0%,
+                transparent 34%,
+                rgba(200, 180, 150, 0.3) 36%,
+                rgba(200, 180, 150, 0.6) 38%,
+                rgba(200, 180, 150, 0.4) 40%,
+                transparent 42%,
+                transparent 56%,
+                rgba(200, 180, 150, 0.4) 58%,
+                rgba(200, 180, 150, 0.6) 60%,
+                rgba(200, 180, 150, 0.3) 62%,
+                transparent 64%,
+                transparent 100%
+            );
+        }
+
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+            50% { transform: translate(-50%, -50%) translateY(-20px); }
+        }
+
+        @keyframes ringFloat {
+            0%, 100% { transform: translate(-50%, -50%) rotateX(75deg) translateY(0px); }
+            50% { transform: translate(-50%, -50%) rotateX(75deg) translateY(-20px); }
+        }
+
+        h1 {
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #f4e4c1 50%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #f4e4c1;
+            text-align: center;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 2rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(244, 228, 193, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(244, 228, 193, 0.5);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(244, 228, 193, 0.2);
+        }
+
+        .info-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #f4e4c1;
+        }
+
+        .info-card p {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1.5rem 3rem;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, #f4e4c1 0%, #d4c197 100%);
+            color: #0a0e27;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(244, 228, 193, 0.3);
+            margin: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(244, 228, 193, 0.5);
+        }
+
+        /* Solar System Section */
+        .solar-system-section {
+            background-color: rgba(10, 14, 39, 0.5);
+            backdrop-filter: blur(5px);
+            overflow: hidden;
+            min-height: 700px;
+            padding: 80px 20px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .solar-system-section h2 {
+            font-size: 2.5rem;
+            color: #f4e4c1;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .solar-system-section > p {
+            text-align: center;
+            color: #ccc;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        .solar-system-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 700px;
+            margin: 40px auto 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sun {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ffd700;
+            box-shadow: 0 0 30px #ffd700, 0 0 50px #ff8c00;
+            z-index: 10;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .orbit {
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            animation: spin linear infinite;
+            pointer-events: none;
+        }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            pointer-events: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .planet:hover {
+            transform: translate(-50%, -50%) scale(1.3);
+        }
+
+        .planet-label {
+            position: absolute;
+            bottom: 150%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 100;
+            font-weight: 600;
+            border: 1px solid #f4e4c1;
+        }
+
+        .planet:hover .planet-label {
+            opacity: 1;
+        }
+
+        #mercury-orbit { width: 80px; height: 80px; animation-duration: 5s; }
+        #mercury { width: 6px; height: 6px; background: #9f9f9f; top: -3px; }
+
+        #venus-orbit { width: 120px; height: 120px; animation-duration: 8s; }
+        #venus { width: 10px; height: 10px; background: #d2a679; top: -5px; }
+
+        #earth-orbit { width: 170px; height: 170px; animation-duration: 12s; }
+        #earth { width: 12px; height: 12px; background: #6b93d6; top: -6px; }
+
+        #mars-orbit { width: 220px; height: 220px; animation-duration: 20s; }
+        #mars { width: 8px; height: 8px; background: #c1440e; top: -4px; }
+
+        #jupiter-orbit { width: 300px; height: 300px; animation-duration: 40s; }
+        #jupiter { width: 22px; height: 22px; background: #c9a88a; top: -11px; }
+
+        #sara-orbit { width: 450px; height: 450px; animation-duration: 70s; }
+        #sara {
+            width: 18px;
+            height: 18px;
+            background: #e0c6a5;
+            top: -9px;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2), 0 0 0 5px rgba(255, 255, 255, 0.13), 0 0 15px #e0c6a5;
+        }
+
+        #uranus-orbit { width: 550px; height: 550px; animation-duration: 100s; }
+        #uranus { width: 14px; height: 14px; background: #aee5e8; top: -7px; }
+
+        #neptune-orbit { width: 650px; height: 650px; animation-duration: 130s; }
+        #neptune { width: 14px; height: 14px; background: #3f54ba; top: -7px; }
+
+        /* Certificate Section */
+        .certificate-section {
+            background: radial-gradient(ellipse at top, #1b2735 0%, #0a0e27 100%);
+            padding: 80px 20px;
+            z-index: 2;
+            position: relative;
+            text-align: center; /* <-- FIX 1: This centers your buttons */
+        }
+
+        .certificate-section h2 {
+            font-size: 2.5rem;
+            color: #f4e4c1;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .certificate-section > p {
+            color: #ccc;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .certificate-modal.active {
+            display: flex;
+        }
+
+        .close-modal-btn {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: #f4e4c1;
+            color: #0a0e27;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .close-modal-btn:hover {
+            background: #fff;
+            transform: rotate(90deg);
+        }
+
+        #certificate-wrapper {
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: #fdfdf0;
+            color: #333;
+            border: 15px solid #c0a060;
+            padding: 30px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .certificate-content {
+            border: 2px dashed #c0a060;
+            padding: 20px;
+        }
+
+        .cert-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #1a2a4c;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .cert-subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .cert-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: #1a2a4c;
+            text-align: center;
+            margin: 0;
+            /* Resetting the global h1 style */
+            background: none;
+            -webkit-background-clip: initial;
+            -webkit-text-fill-color: initial;
+            background-clip: initial;
+            animation: none;
+        }
+
+        .cert-details {
+            text-align: center;
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .cert-body-text {
+            font-size: 1.1rem;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 30px auto;
+            color: #333;
+        }
+
+        .cert-date {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .cert-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 50px;
+        }
+
+        .signature {
+            width: 45%;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1rem;
+            border-top: 1px solid #777;
+            padding-top: 10px;
+            color: #333;
+        }
+
+        .signature span {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 2rem;
+            display: block;
+        }
+
+        .seal {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .seal img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Print Styles */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+
+            body, html {
+                width: 100%;
+                height: auto;
+                background: #fff;
+                color: #000;
+            }
+
+            .stars, .nebula, .hero, .info-grid, .cta-section, .solar-system-section, .certificate-section > h2, .certificate-section > p, .btn, .close-modal-btn {
+                display: none !important;
+            }
+
+            .certificate-modal {
+                display: block !important;
+                position: relative !important;
+                background: white !important;
+                padding: 0 !important;
+            }
+
+            .certificate-section {
+                padding: 0;
+                margin: 0;
+                background: white;
+            }
+
+            #certificate-wrapper {
+                position: relative;
+                top: 0;
+                left: 0;
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                padding: 1cm;
+                border: 15px solid #c0a060;
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+
+            /* <-- FIX 2: This makes "Sara" and the header visible when printing --> */
+            .cert-header, .cert-name {
+                color: #1a2a4c !important;
+                -webkit-text-fill-color: #1a2a4c !important; /* Resets transparent text */
+                background: none !important; /* Removes gradient */
+            }
+
+            /* This ensures all other certificate text is black */
+            .cert-subtitle, .cert-details, .cert-body-text, .cert-date, .signature {
+                color: #000 !important;
+            }
+
+            .seal {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .seal img {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            .saturn-container {
+                width: 300px;
+                height: 300px;
+            }
+            .saturn {
+                width: 200px;
+                height: 200px;
+            }
+            .ring {
+                width: 320px;
+                height: 320px;
+            }
+            .solar-system-container {
+                max-width: 400px;
+                height: 400px;
+            }
+            #neptune-orbit { width: 380px; height: 380px; }
+            #uranus-orbit { width: 320px; height: 320px; }
+            #sara-orbit { width: 260px; height: 260px; }
+            #jupiter-orbit { width: 180px; height: 180px; }
+            #mars-orbit { width: 130px; height: 130px; }
+            #earth-orbit { width: 100px; height: 100px; }
+            #venus-orbit { width: 70px; height: 70px; }
+            #mercury-orbit { width: 50px; height: 50px; }
+            .cert-header {
+                font-size: 2rem;
+            }
+            .cert-name {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars1"></div>
+    <div class="stars" id="stars2"></div>
+    <div class="stars" id="stars3"></div>
+
+    <div class="hero">
+        <div class="saturn-container">
+            <div class="ring"></div>
+            <div class="saturn"></div>
+        </div>
+        <h1>SARA</h1>
+        <p class="subtitle">Formerly Known as Saturn</p>
+    </div>
+
+    <div class="info-grid">
+        <div class="info-card">
+            <h3>🪐 Your Planet</h3>
+            <p>Congratulations! You are now the proud owner of the sixth planet from the Sun, officially renamed to <strong>Sara</strong>. This magnificent ringed world is now forever associated with your name across the cosmos.</p>
+        </div>
+        <div class="info-card">
+            <h3>💍 The Rings</h3>
+            <p>Sara boasts the most spectacular ring system in our solar system, composed of billions of ice particles ranging from tiny grains to house-sized chunks, all orbiting in perfect harmony.</p>
+        </div>
+        <div class="info-card">
+            <h3>🌙 95 Moons</h3>
+            <p>Your planet comes with an impressive collection of 95 known moons, including Titan, the second-largest moon in the solar system with its own thick atmosphere.</p>
+        </div>
+        <div class="info-card">
+            <h3>⚡ Storm Systems</h3>
+            <p>Sara features hexagonal storm patterns at its north pole and wind speeds exceeding 1,100 mph at the equator, making it one of the most dynamic worlds known to science.</p>
+        </div>
+        <div class="info-card">
+            <h3>📏 Dimensions</h3>
+            <p>Your planet has a diameter of 120,536 km and could fit 764 Earths inside it. Despite its massive size, Sara is the least dense planet - it would float in water!</p>
+        </div>
+        <div class="info-card">
+            <h3>🌌 Cosmic Legacy</h3>
+            <p>At 1.2 billion kilometers from the Sun, Sara takes 29.5 Earth years to complete one orbit. Your planet has been observed since ancient times and now bears your eternal mark.</p>
+        </div>
+    </div>
+
+    <section class="solar-system-section">
+        <h2>Our Solar System</h2>
+        <p>An interactive guide to Sara's neighborhood. Watch the planets orbit!</p>
+        <div class="solar-system-container">
+            <div class="sun"></div>
+
+            <div class="orbit" id="mercury-orbit">
+                <div class="planet" id="mercury">
+                    <span class="planet-label">Mercury</span>
+                </div>
+            </div>
+
+            <div class="orbit" id="venus-orbit">
+                <div class="planet" id="venus">
+                    <span class="planet-label">Venus</span>
+                </div>
+            </div>
+
+            <div class="orbit" id="earth-orbit">
+                <div class="planet" id="earth">
+                    <span class="planet-label">Earth</span>
+                </div>
+            </div>
+
+            <div class="orbit" id="mars-orbit">
+                <div class="planet" id="mars">
+                    <span class="planet-label">Mars</span>
+                </div>
+            </div>
+
+            <div class="orbit" id="jupiter-orbit">
+                <div class="planet" id="jupiter">
+                    <span class="planet-label">Jupiter</span>
+                </div>
+            </div>
+
+            <div class="orbit" id="sara-orbit">
+                <div class="planet" id="sara">
+                    <span class="planet-label">Sara</span>
+                </div>
+            </div>
+
+            <div class="orbit" id="uranus-orbit">
+                <div class="planet" id="uranus">
+                    <span class="planet-label">Uranus</span>
+                </div>
+            </div>
+
+            <div class="orbit" id="neptune-orbit">
+                <div class="planet" id="neptune">
+                    <span class="planet-label">Neptune</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="certificate-section">
+        <h2>Your Certificate of Tenureship</h2>
+        <p>This certificate validates your official acquisition. Click the button below to view and print.</p>
+        <button class="btn" id="view-certificate-btn">View Certificate</button>
+        <button class="btn" id="print-button">Print Certificate</button>
+    </section>
+
+    <div class="certificate-modal" id="certificate-modal">
+        <button class="close-modal-btn" id="close-modal-btn">×</button>
+        <div id="certificate-wrapper">
+            <div class="certificate-content">
+                <div class="cert-header">
+                    Certificate of Planetary Tenureship
+                </div>
+                <div class="cert-body">
+                    <p class="cert-subtitle">This document hereby certifies that</p>
+                    <h1 class="cert-name">Sara</h1>
+                    <p class="cert-details">(Formerly known as the celestial body <strong>Saturn</strong>)</p>
+                    <p class="cert-body-text">
+                        has been officially designated and registered. This title, along with all associated rings, moons, and atmospheric phenomena, is recognized by the Intergalactic Registry of Celestial Claims.
+                    </p>
+                    <p class="cert-date" id="current-date">Issued on this day: November 1, 2025</p>
+                </div>
+                <div class="cert-footer">
+                    <div class="signature">
+                        <span>NASA</span>
+                        Chief Registrar, NASA Cosmic Ledger
+                    </div>
+                    <div class="seal">
+                        <img src="https://images.seeklogo.com/logo-png/9/1/nasa-logo-png_seeklogo-97034.png" alt="NASA Official Seal">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create nebulas
+        const nebulas = [
+            { color: 'rgba(138, 43, 226, 0.3)', size: 300, x: 20, y: 15 },
+            { color: 'rgba(0, 191, 255, 0.3)', size: 400, x: 70, y: 60 },
+            { color: 'rgba(255, 20, 147, 0.3)', size: 250, x: 40, y: 80 }
+        ];
+        
+        nebulas.forEach(neb => {
+            const nebula = document.createElement('div');
+            nebula.className = 'nebula';
+            nebula.style.width = neb.size + 'px';
+            nebula.style.height = neb.size + 'px';
+            nebula.style.background = neb.color;
+            nebula.style.left = neb.x + '%';
+            nebula.style.top = neb.y + '%';
+            nebula.style.position = 'fixed';
+            document.body.appendChild(nebula);
+        });
+
+        // Auto-updating date
+        const dateElement = document.getElementById("current-date");
+        if (dateElement) {
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = today.toLocaleDateString('en-US', options);
+            dateElement.textContent = `Issued on this day: ${formattedDate}`;
+        }
+
+        // Certificate modal functionality
+        const viewCertificateBtn = document.getElementById("view-certificate-btn");
+        const certificateModal = document.getElementById("certificate-modal");
+        const closeModalBtn = document.getElementById("close-modal-btn");
+
+        if (viewCertificateBtn) {
+            viewCertificateBtn.addEventListener("click", function() {
+                certificateModal.classList.add("active");
+                document.body.style.overflow = "hidden";
+            });
+        }
+
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener("click", function() {
+                certificateModal.classList.remove("active");
+                document.body.style.overflow = "auto";
+            });
+        }
+
+        // Close modal when clicking outside
+        certificateModal.addEventListener("click", function(e) {
+            if (e.target === certificateModal) {
+                certificateModal.classList.remove("active");
+                document.body.style.overflow = "auto";
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "Escape" && certificateModal.classList.contains("active")) {
+                certificateModal.classList.remove("active");
+                document.body.style.overflow = "auto";
+            }
+        });
+
+        // Print button functionality
+        const printButton = document.getElementById("print-button");
+        if (printButton) {
+            printButton.addEventListener("click", function() {
+                // We show the modal first so the print styles can target it
+                certificateModal.classList.add("active");
+                
+                // We need a tiny delay for the browser to render the modal before printing
+                setTimeout(() => {
+                    window.print();
+                    // Optionally, close the modal after printing
+                    // certificateModal.classList.remove("active");
+                    // document.body.style.overflow = "auto";
+                }, 100); 
+            });
+        }
+
+        // Interactive Saturn rotation on mouse move
+        const saturnContainer = document.querySelector('.saturn-container');
+        const saturn = document.querySelector('.saturn');
+        
+        saturnContainer.addEventListener('mousemove', (e) => {
+            const rect = saturnContainer.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            const rotateX = (y / rect.height) * 20;
+            const rotateY = (x / rect.width) * 20;
+            
+            // This stops the 'float' animation from conflicting
+            saturn.style.animation = 'none'; 
+            saturn.style.transform = `translate(-50%, -50%) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        saturnContainer.addEventListener('mouseleave', () => {
+            // Re-apply the original animations
+            saturn.style.animation = 'rotate 20s linear infinite, float 6s ease-in-out infinite';
+            saturn.style.transform = 'translate(-50%, -50%)';
+        });
+    </script>
+</body>
+</html>
